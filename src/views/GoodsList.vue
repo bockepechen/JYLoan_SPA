@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 调用Header组件 -->
+    <!-- 调用Header组件 20171011 -->
     <nav-header></nav-header>
     <!-- 调用面包屑组件 同时使用slot插槽 -->
     <nav-bread>
