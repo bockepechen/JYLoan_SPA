@@ -13,7 +13,7 @@
           <a href="javascript:void(0)" class="default cur">Default</a>
           <a href="javascript:void(0)" class="price" @click="sortByPrice" v-bind:class="{'sort-up':sortFlag}">
             Price
-            <svg class="icon icon-arrow-short" >
+            <svg class="icon icon-arrow-short">
               <use xlink:href="#icon-arrow-short"></use>
             </svg>
           </a>
@@ -93,139 +93,140 @@
   </div>
 </template>
 <style>
-  .load-more {
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-  }
-  .btn:hover{
-    background-color: #ffe5e6;
-    transition: all 1s ease-out;
-  }
+.load-more {
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
+
+.btn:hover {
+  background-color: #ffe5e6;
+  transition: all 1s ease-out;
+}
 </style>
 <script>
-   import '@/assets/css/base.css'
-   import '@/assets/css/product.css'
-   import '@/assets/css/login.css'
-   import NavHeader from '@/components/NavHeader.vue'
-   import NavFooter from '@/components/NavFooter.vue'
-   import NavBread from '@/components/NavBread.vue'
-   import ModalWindow from './../components/ModalWindow.vue'
-   import axios from 'axios'
-  export default {
-    data() {
-      return {
-        goodsList:[],
-        priceFilter:[],
-        priceChecked:0,
-        ifshowFilterBy:false,
-        ifshowOverLay:false,
-        page:1,
-        pageSize:6,
-        sortFlag:true,
-        busy:true,
-        loadingGif:false,
-        mdShow:false,
-        mdShowBuy:false
-      }
-    },
-    components:{
-      NavHeader,
-      NavFooter,
-      NavBread,
-      ModalWindow
-    },
-    mounted: function() {
-      this.getGoodsList(); //页面加载执行
-    },
-    methods: {
-      getGoodsList(refreshData=true) {
-          // 访问mock数据文件逻辑（页面属性名称需要根据mock文件中属性名改动）
-//        axios.get("/goods").then((res)=>{
-//          console.log(`res:${res.data.resData}`);
-//          this.goodsList = res.data.result.list;
-//          this.priceFilter = res.data.priceRange;
-//          console.log(this.goodsList);
-//        });
-        // 访问nodejs后台数据
-        axios.get("/getGoodsList", {
-            // 请求参数设置
-            params:{
-                page:this.page,
-                pageSize:this.pageSize,
-                sort:this.sortFlag?1:-1, //sortFlag = true时为正序排列（1）；false时为倒序排列（-1）
-                priceRange:this.priceChecked
-            }
-        }).then((res)=>{
-          if (refreshData) {
-            // 使用请求数据直接赋值
-            this.goodsList = res.data.rec_goods.list;
-            // 非滚动查询后，要将滚到查询开关打开
-            this.busy = false;
+import '@/assets/css/base.css'
+import '@/assets/css/product.css'
+import '@/assets/css/login.css'
+import NavHeader from '@/components/NavHeader.vue'
+import NavFooter from '@/components/NavFooter.vue'
+import NavBread from '@/components/NavBread.vue'
+import ModalWindow from './../components/ModalWindow.vue'
+import axios from 'axios'
+export default {
+  data() {
+    return {
+      goodsList: [],
+      priceFilter: [],
+      priceChecked: 0,
+      ifshowFilterBy: false,
+      ifshowOverLay: false,
+      page: 1,
+      pageSize: 6,
+      sortFlag: true,
+      busy: true,
+      loadingGif: false,
+      mdShow: false,
+      mdShowBuy: false
+    }
+  },
+  components: {
+    NavHeader,
+    NavFooter,
+    NavBread,
+    ModalWindow
+  },
+  mounted: function() {
+    this.getGoodsList(); //页面加载执行
+  },
+  methods: {
+    getGoodsList(refreshData = true) {
+      // 访问mock数据文件逻辑（页面属性名称需要根据mock文件中属性名改动）
+      //        axios.get("/goods").then((res)=>{
+      //          console.log(`res:${res.data.resData}`);
+      //          this.goodsList = res.data.result.list;
+      //          this.priceFilter = res.data.priceRange;
+      //          console.log(this.goodsList);
+      //        });
+      // 访问nodejs后台数据
+      axios.get("/getGoodsList", {
+        // 请求参数设置
+        params: {
+          page: this.page,
+          pageSize: this.pageSize,
+          sort: this.sortFlag ? 1 : -1, //sortFlag = true时为正序排列（1）；false时为倒序排列（-1）
+          priceRange: this.priceChecked
+        }
+      }).then((res) => {
+        if (refreshData) {
+          // 使用请求数据直接赋值
+          this.goodsList = res.data.rec_goods.list;
+          // 非滚动查询后，要将滚到查询开关打开
+          this.busy = false;
+        } else {
+          // 使用请求数据累加赋值
+          this.goodsList = this.goodsList.concat(res.data.rec_goods.list);
+          if (res.data.rec_goods.count == 0) {
+            this.busy = true;
           } else {
-            // 使用请求数据累加赋值
-            this.goodsList = this.goodsList.concat(res.data.rec_goods.list);
-            if (res.data.rec_goods.count == 0) {
-                this.busy = true;
-            } else {
-                this.busy = false;
-            }
+            this.busy = false;
           }
+        }
 
-          this.priceFilter = res.data.rec_price_range.list;
-        });
-      },
-      // 排序点击事件
-      sortByPrice(){
-        this.sortFlag = !this.sortFlag;
-        this.page = 1;
-        this.getGoodsList();
-      },
-      showPriceFilterPop() {
-        this.ifshowFilterBy = true;
-        this.ifshowOverLay = true;
-      },
-      closePriceFilterPop() {
-        this.ifshowFilterBy = false;
-        this.ifshowOverLay = false;
-      },
-      // 价格区间点击事件
-      choosePrice(index) {
-        this.priceChecked=index;
-        this.closePriceFilterPop();
-        this.page = 1;
-        this.getGoodsList();
-      },
-      // 页面滚动加载事件
-      loadMore() {
-        this.busy = true;
-        setTimeout(()=>{
-           this.page++;
-           this.loadingGif = true;
-           this.getGoodsList(false);
-           this.loadingGif = false;
-        },500);
-      },
-      // 加入购物车事件
-      addCastList(productId) {
-        axios.post('/getGoodsList/addCart',{
-          productId:productId
-        }).then((rec)=>{
-            if (rec.data.status == 0) {
-                //alert("加入购物车成功");
-                this.mdShowBuy = true;
-                this.$store.commit('updateCartNum', 1);
-            } else {
-                //alert(rec.data.msg);
-              this.mdShow = true; // 该值传递给模态窗口子组件
-            }
-        });
-      },
-      // 父组件关闭模态窗口
-      closeByFather() {
-        this.mdShow = false;
-        this.mdShowBuy = false;
-      }
+        this.priceFilter = res.data.rec_price_range.list;
+      });
+    },
+    // 排序点击事件
+    sortByPrice() {
+      this.sortFlag = !this.sortFlag;
+      this.page = 1;
+      this.getGoodsList();
+    },
+    showPriceFilterPop() {
+      this.ifshowFilterBy = true;
+      this.ifshowOverLay = true;
+    },
+    closePriceFilterPop() {
+      this.ifshowFilterBy = false;
+      this.ifshowOverLay = false;
+    },
+    // 价格区间点击事件
+    choosePrice(index) {
+      this.priceChecked = index;
+      this.closePriceFilterPop();
+      this.page = 1;
+      this.getGoodsList();
+    },
+    // 页面滚动加载事件
+    loadMore() {
+      this.busy = true;
+      setTimeout(() => {
+        this.page++;
+        this.loadingGif = true;
+        this.getGoodsList(false);
+        this.loadingGif = false;
+      }, 500);
+    },
+    // 加入购物车事件
+    addCastList(productId) {
+      axios.post('/getGoodsList/addCart', {
+        productId: productId
+      }).then((rec) => {
+        if (rec.data.status == 0) {
+          //alert("加入购物车成功");
+          this.mdShowBuy = true;
+          this.$store.commit('updateCartNum', 1);
+        } else {
+          //alert(rec.data.msg);
+          this.mdShow = true; // 该值传递给模态窗口子组件
+        }
+      });
+    },
+    // 父组件关闭模态窗口
+    closeByFather() {
+      this.mdShow = false;
+      this.mdShowBuy = false;
     }
   }
+}
 </script>

@@ -7,6 +7,7 @@ import Address from '@/views/Address'
 import OrderConfirm from '@/views/OrderConfirm'
 import OrderSuccess from '@/views/OrderSuccess'
 import Homepage from '@/views/Homepage/Homepage'
+import P1 from '@/views/iview/P1'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ export default new Router({
       path: '/Homepage',
       name: 'Homepage',
       component: Homepage
+    },
+    {
+      path: '/P1',
+      name: 'P1',
+      component: P1
     }
   ]
 })

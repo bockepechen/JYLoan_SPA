@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-        <div class="navbar">
+        <!-- <div class="navbar">
             <div class="navbar-left-container">
                 <a href="/">
                     <img class="navbar-brand-logo" src="../../static/ZD_logo.jpg">
@@ -30,7 +30,28 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <Menu mode="horizontal" theme="dark" active-name="1">
+            <div class="layout-logo"></div>
+            <div class="layout-nav">
+                <MenuItem name="1">
+                    <Icon type="ios-navigate"></Icon>
+                    导航一
+                </MenuItem>
+                <MenuItem name="2">
+                    <Icon type="ios-keypad"></Icon>
+                    导航二
+                </MenuItem>
+                <MenuItem name="3">
+                    <Icon type="ios-analytics"></Icon>
+                    导航三
+                </MenuItem>
+                <MenuItem name="4">
+                    <Icon type="ios-paper"></Icon>
+                    导航四
+                </MenuItem>
+            </div>
+        </Menu>
     </header>
 </template>
 <style>
@@ -70,5 +91,21 @@
 .navbar-menu-container ul li:hover {
     background-color: #3479df;
     color: #fff;
+}
+
+.layout-logo {
+    width: 100px;
+    height: 30px;
+    background: #5b6270;
+    border-radius: 3px;
+    float: left;
+    position: relative;
+    top: 15px;
+    left: 20px;
+}
+
+.layout-nav {
+    width: 420px;
+    margin: 0 auto;
 }
 </style>

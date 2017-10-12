@@ -7,6 +7,8 @@ import VueLazyLoad from 'vue-lazyload'
 import vueInfiniteScroll from 'vue-infinite-scroll'
 import {currency} from './util/currency'
 import Vuex from 'vuex'
+import iView from 'iview'
+import 'iview/dist/styles/iview.css';
 
 Vue.config.productionTip = false
 
@@ -17,6 +19,8 @@ Vue.use(VueLazyLoad, {
 Vue.use(vueInfiniteScroll)
 
 Vue.use(Vuex)
+
+Vue.use(iView)
 
 const store = new Vuex.Store({
   state:{
