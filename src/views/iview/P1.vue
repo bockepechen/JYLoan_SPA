@@ -5,7 +5,7 @@
             <div class="layout-logo"></div>
             <div class="layout-nav">
                 <li v-for="(item,index) in menuItem">
-                    <MenuItem name="1">
+                    <MenuItem name="2">
                     <Icon type="ios-keypad"></Icon>
                     {{item.name}}
                     </MenuItem>
